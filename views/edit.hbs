@@ -20,7 +20,9 @@
                 <option value="6">6 - Hardcore</option>
                 {{/select}}
             </select>
-            
+            {{#if err}}
+            <span class="error">{{err.message}}</span>
+            {{/if}}
             <input type="submit" value="Edit">
 
             <a class="btn" href="/products/details/{{cube._id}}">Back</a>

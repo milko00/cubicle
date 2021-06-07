@@ -38,12 +38,18 @@ async function getCubeCreator (id) {
 }
 
 async function create(data) {
+    if (data.name.trim() == '' || data.description.trim() == '' || data.imageUrl.trim() == '' || data.difficultyLevel.trim() == '') {
+        throw { message: 'All fields is required!'};
+    }
     let cube = await new Cube(data);
 
     return cube.save()
 }
 
 async function edit(id, data) {
+    if (data.name.trim() == '' || data.description.trim() == '' || data.imageUrl.trim() == '' || data.difficultyLevel.trim() == '') {
+        throw {message: 'All fields is required!'};
+    }
     return await Cube.updateOne({_id: id}, data);
 }
 

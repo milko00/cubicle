@@ -21,16 +21,13 @@ router.get('/create', isAuthenticated, (req, res) => {
 
 router.post('/create', isAuthenticated, async (req, res) => {
     let data = req.body;
-    if (data.name.trim() == '' || data.description.trim() == '' || data.imageUrl.trim() == '' || data.difficultyLevel.trim() == '') {
-        throw new Error('All fields is required!');
-    }
+    
     data.createdBy = req.user._id
     try {
         await productService.create(data);
         res.redirect('/products');
     } catch (err) {
-        console.error(err);
-        res.status(500).end();
+        res.render('create', { title: 'Create Cube Page', err });
     }
 
 })
@@ -46,16 +43,15 @@ router.get('/edit/:productId',isAuthenticated, isAuthorization, (req, res) => {
 
 router.post('/edit/:productId',isAuthenticated, isAuthorization, async (req, res) => {
     const data = req.body;
-    if (data.name.trim() == '' || data.description.trim() == '' || data.imageUrl.trim() == '' || data.difficultyLevel.trim() == '') {
-        throw new Error('All fields is required!');
+    
+    try {    
+        await productService.edit(req.params.productId, data);
+        res.redirect('/products');
+    } catch (err) {
+        const cube = req.body;
+        res.render('edit', { title: 'Edit', cube, err });
     }
-    productService.edit(req.params.productId, data)
-        .then(() => res.redirect('/products'))
-        .catch(err => {
-            const cube = req.body;
-            res.render('edit', { title: 'Edit', cube, err });
-        })
-
+        
 });
 
 router.get('/delete/:productId',isAuthenticated, isAuthorization, async (req, res) => {
@@ -74,7 +70,11 @@ router.get('/details/:productId',isAuthenticated, isAuthorization, (req, res) =>
 
     productService.getByIdWithAccessories(productId)
         .then(cube => {
-            cube.accessories.map(a => a.productId = productId)
+            cube.accessories.map(a => {
+                a.productId = productId;
+                a.isAuth = cube.createdBy == req.user._id;
+                return a;
+            })
             res.render('details', { title: 'Details', cube });
         })
         .catch(() => res.status(500).end());

@@ -30,7 +30,7 @@ async function login({ username, password }) {
     let isMatch = await bcrypt.compare(password, user.password);
 
     if (!isMatch) {
-        throw { message: 'Password does not match!' }
+        throw { message: 'Wrong username or password!' }
     }
     let token = jwt.sign({ _id: user._id }, JWT_SECRET)
 

@@ -54,11 +54,11 @@ router.post('/register', isGuest, validate, async (req, res) => {
         }
 
         if(!req.usernameErrors.onlyEnglishLettersAndNumbers) {
-            throw { message: 'Invalid username, only english letters and numbers'}
+            throw { message: 'Invalid username, only english letters and digits'}
         }
 
         if(!req.passwordError) {
-            throw { message: 'Invalid password! Your password must be a minimum length of eight characters, consisting of the third of the following - lowercase (a-z), Uppercase (A-Z) alphabetic characters, numeric characters (0-9) and special characters (! $ %).'}
+            throw { message: 'Invalid password! Your password must be a minimum length of eight characters, consisting of the four of the following - lowercase (a-z), Uppercase (A-Z) alphabetic characters, numeric characters (0-9) and special characters (! $ %).'}
         }
 
         await authService.register({ username, password });

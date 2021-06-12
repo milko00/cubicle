@@ -29,23 +29,23 @@ router.post('/create', isAuthenticated, validate, async (req, res) => {
         }
 
         if (!req.nameErrors.lengthError) {
-            throw { message: 'Invalid name, minimum length - 5' }
+            throw { message: 'Invalid name, minimum length - 5' };
         }
 
         if (!req.nameErrors.invalidCharacters) {
-            throw { message: 'Invalid name, only english letters, numbers and whitespace' }
+            throw { message: 'Invalid name, only english letters, digits and whitespace' };
         }
 
         if (!req.descriptionErrors.lengthError) {
-            throw { message: 'Invalid description, minimum length - 20' }
+            throw { message: 'Invalid description, minimum length - 20' };
         }
 
         if (!req.descriptionErrors.invalidCharacters) {
-            throw { message: 'Invalid description, only english letters, numbers and whitespace' }
+            throw { message: 'Invalid description, only english letters, digits and whitespace' };
         }
         
         if(!req.urlError) {
-            throw { message: 'Invalid image URL' }
+            throw { message: 'Invalid image URL' };
         }
 
         data.createdBy = req.user._id
@@ -78,6 +78,26 @@ router.post('/edit/:productId', isAuthenticated, isAuthorization, validate, asyn
             throw { message: 'All fields is required!' };
         }
 
+        if (!req.nameErrors.lengthError) {
+            throw { message: 'Invalid name, minimum length - 5' };
+        }
+
+        if (!req.nameErrors.invalidCharacters) {
+            throw { message: 'Invalid name, only english letters, digits and whitespace' };
+        }
+
+        if (!req.descriptionErrors.lengthError) {
+            throw { message: 'Invalid description, minimum length - 20' };
+        }
+
+        if (!req.descriptionErrors.invalidCharacters) {
+            throw { message: 'Invalid description, only english letters, digits and whitespace' };
+        }
+        
+        if(!req.urlError) {
+            throw { message: 'Invalid image URL' };
+        }
+
         await productService.edit(req.params.productId, data);
         res.redirect('/products');
     } catch (err) {
@@ -96,7 +116,7 @@ router.get('/delete/:productId', isAuthenticated, isAuthorization, async (req, r
         await productService.deleteCube(cubeId);
         res.redirect('/products');
     } catch (err) {
-        res.render(`details`, { message: 'Fail delete' })
+        res.render(`details`, { message: 'Fail delete' });
     }
 });
 
@@ -120,7 +140,7 @@ router.get('/details/:productId', isAuthenticated, isAuthorization, (req, res) =
 router.post('/:productId/:accessoryId/delete', isAuthenticated, isAuthorization, (req, res) => {
     productService.removeAccessory(req.params.productId, req.params.accessoryId)
         .then(() => res.redirect(`/products/details/${req.params.productId}`))
-        .catch(() => res.status(500).end())
+        .catch(() => res.status(500).end());
 })
 
 

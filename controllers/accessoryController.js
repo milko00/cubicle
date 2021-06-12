@@ -17,23 +17,23 @@ router.post('/create', validate, async (req, res) => {
         }
 
         if (!req.nameErrors.lengthError) {
-            throw { message: 'Invalid name, minimum length - 5' }
+            throw { message: 'Invalid name, minimum length - 5' };
         }
 
         if (!req.nameErrors.invalidCharacters) {
-            throw { message: 'Invalid name, only english letters, numbers and whitespace' }
+            throw { message: 'Invalid name, only english letters, digits and whitespace' };
         }
 
         if (!req.descriptionErrors.lengthError) {
-            throw { message: 'Invalid description, minimum length - 20' }
+            throw { message: 'Invalid description, minimum length - 20' };
         }
 
         if (!req.descriptionErrors.invalidCharacters) {
-            throw { message: 'Invalid description, only english letters, numbers and whitespace' }
+            throw { message: 'Invalid description, only english letters, digits and whitespace' };
         }
         
         if(!req.urlError) {
-            throw { message: 'Invalid image URL' }
+            throw { message: 'Invalid image URL' };
         }
 
         await accessoryService.create(data);

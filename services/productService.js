@@ -33,28 +33,24 @@ async function getByIdWithAccessories(id) {
     return await Cube.findById(id).populate('accessories').lean();
 }
 
-async function getCubeCreator (id) {
-   return await Cube.findById(id, {"createdBy": 1})
+async function getCubeCreator(id) {
+    return await Cube.findById(id, { "createdBy": 1 })
 }
 
 async function create(data) {
-    if (data.name.trim() == '' || data.description.trim() == '' || data.imageUrl.trim() == '' || data.difficultyLevel.trim() == '') {
-        throw { message: 'All fields is required!'};
-    }
-    let cube = await new Cube(data);
+    
+    let cube = await new Cube({ name: data.name.trim(), description: data.description.trim(), imageUrl: data.imageUrl.trim(), difficultyLevel: data.difficultyLevel.trim(), createdBy });
 
     return cube.save()
 }
 
 async function edit(id, data) {
-    if (data.name.trim() == '' || data.description.trim() == '' || data.imageUrl.trim() == '' || data.difficultyLevel.trim() == '') {
-        throw {message: 'All fields is required!'};
-    }
-    return await Cube.updateOne({_id: id}, data);
+    
+    return await Cube.updateOne({ _id: id }, { name: data.name.trim(), description: data.description.trim(), imageUrl: data.imageUrl.trim(), difficultyLevel: data.difficultyLevel.trim(), createdBy });
 }
 
-async function deleteCube (id) {
-    return await Cube.deleteOne({_id: id});
+async function deleteCube(id) {
+    return await Cube.deleteOne({ _id: id });
 }
 
 async function attachAccessory(cubeId, accessoryId) {
@@ -63,16 +59,16 @@ async function attachAccessory(cubeId, accessoryId) {
     accessory.cubes.push(cube._id)
     cube.accessories.push(accessory);
     return {
-       cube: cube.save(),
-       accessory: accessory.save()
+        cube: cube.save(),
+        accessory: accessory.save()
     };
 
 }
 
-async function removeAccessory (cubeId, accessoryId) {
-    let cube = await Cube.updateOne({_id: cubeId}, {$pull: {accessories: accessoryId}});
-    let accessory = await Accessory.updateOne({_id: accessoryId}, {$pull: {cubes: cubeId}});
-    
+async function removeAccessory(cubeId, accessoryId) {
+    let cube = await Cube.updateOne({ _id: cubeId }, { $pull: { accessories: accessoryId } });
+    let accessory = await Accessory.updateOne({ _id: accessoryId }, { $pull: { cubes: cubeId } });
+
     return {
         cube,
         accessory

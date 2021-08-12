@@ -9,3 +9,5 @@ This application is rubik cubes catalogue. Application's users are able to creat
 * JSON Web Token
 * Mongoose
 * Nodemon
+
+### <a href="https://milkouzunov.github.io/resume/">LIVE DEMO</a>

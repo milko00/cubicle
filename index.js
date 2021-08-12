@@ -4,6 +4,8 @@ const port = process.env.PORT || 3000;
 const routes = require('./routes')
 const app = express();
 
+require('dotenv').config();
+
 require('./config/setupExpress')(app);
 require('./config/setupMongoose')();
 
